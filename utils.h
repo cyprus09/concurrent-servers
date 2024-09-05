@@ -4,13 +4,13 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-#include <cstdarg> // For va_list, va_start, etc.
-#include <cstdio>  // For vsnprintf, printf
-#include <cstring> // For strerror
-#include <cerrno>  // For errno
-#include <stdexcept> // For std::runtime_error
+#include <cstdarg>
+#include <cstdio> 
+#include <cstring>
+#include <cerrno>
+#include <stdexcept>
 #include <string>
-#include <unistd.h> // For close()
+#include <unistd.h>
 
 // Helper function to handle errors and print a formatted message
 void die(const char* fmt, ...);
