@@ -24,7 +24,7 @@ void perror_die(const std::string& msg);
 
 // Reports a peer connection to stdout. sa is the data populated by a successful
 // accept() call
-void report_peer_connected(const sockaddr_in& sa, socklen_t salen);
+void report_peer_connected(const sockaddr_in* sa, socklen_t salen);
 
 // Creates a bound and listening INET socket on the given port number. Returns
 // the socket fd when successful; throws an exception in case of errors
