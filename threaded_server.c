@@ -24,7 +24,7 @@ typedef enum
 
 void serve_connection(int sockfd)
 {
-  if (send(sockfd, '*', 1, 1) < 1)
+  if (send(sockfd, "*", 1, 0) < 1)
     perror_die("send");
 
   ProcessingState state = WAIT_FOR_MSG;
@@ -44,7 +44,7 @@ void serve_connection(int sockfd)
       {
       case WAIT_FOR_MSG:
         if (buf[i] == '^')
-          state = WAIT_FOR_MSG;
+          state = IN_MSG;
         break;
       case IN_MSG:
         if (buf[i] == '$')
@@ -101,9 +101,7 @@ int main(int argc, char **argv)
     int newsockfd = accept(sockfd, (struct sockaddr *)&peer_addr, &peer_addr_len);
 
     if (newsockfd < 0)
-    {
-      perror_die("error on accept");
-    }
+      perror_die("ERROR on accept");
 
     report_peer_connected(&peer_addr, peer_addr_len);
     pthread_t the_thread;
@@ -115,6 +113,8 @@ int main(int argc, char **argv)
     config->sockfd = newsockfd;
     pthread_create(&the_thread, NULL, server_thread, config);
 
+    // Detach the thread - when it's done, its resources will be cleaned up.
+    // Since the main thread lives forever, it will outlive the serving threads.
     pthread_detach(the_thread);
   }
   return 0;
